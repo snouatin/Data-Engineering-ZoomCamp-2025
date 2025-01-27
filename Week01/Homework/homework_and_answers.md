@@ -127,40 +127,21 @@ Answers:
 ### Answer
 To answer this question, the SQL command line used is : 
 ```sql
-SELECT
-    SUM(CASE 
-        WHEN trip_distance <= 1 THEN 1 
-        ELSE 0 
-    END) AS trips_up_to_1_mile,
-    
-    SUM(CASE 
-        WHEN trip_distance > 1 AND trip_distance <= 3 THEN 1 
-        ELSE 0 
-    END) AS trips_between_1_and_3_miles,
-    
-    SUM(CASE 
-        WHEN trip_distance > 3 AND trip_distance <= 7 THEN 1 
-        ELSE 0 
-    END) AS trips_between_3_and_7_miles,
-    
-    SUM(CASE 
-        WHEN trip_distance > 7 AND trip_distance <= 10 THEN 1 
-        ELSE 0 
-    END) AS trips_between_7_and_10_miles,
-    
-    SUM(CASE 
-        WHEN trip_distance > 10 THEN 1 
-        ELSE 0 
-    END) AS trips_over_10_miles
-
-FROM green_taxi_data
-WHERE CAST(lpep_pickup_datetime AS DATE) >= '2019-10-01'
-AND CAST(lpep_dropoff_datetime AS DATE) < '2019-11-01';
+SELECT 
+    SUM(CASE WHEN trip_distance <= 1 THEN 1 ELSE 0 END) AS trips_up_to_1_mile,
+    SUM(CASE WHEN trip_distance > 1 AND trip_distance <= 3 THEN 1 ELSE 0 END) AS trips_between_1_and_3_miles,
+    SUM(CASE WHEN trip_distance > 3 AND trip_distance <= 7 THEN 1 ELSE 0 END) AS trips_between_3_and_7_miles,
+    SUM(CASE WHEN trip_distance > 7 AND trip_distance <= 10 THEN 1 ELSE 0 END) AS trips_between_7_and_10_miles,
+    SUM(CASE WHEN trip_distance > 10 THEN 1 ELSE 0 END) AS trips_over_10_miles
+FROM green_taxi
+WHERE lpep_pickup_datetime >= '2019-10-01 00:00:00' 
+  AND lpep_pickup_datetime < '2019-11-01 00:00:00'
+  AND lpep_dropoff_datetime >= '2019-10-01 00:00:00' 
+  AND lpep_dropoff_datetime < '2019-11-01 00:00:00';
 
 ```
 But we get answers, totally different from the suggestions. We get : 
-**78964 ; 150850 ; 90020 ; 24074 ; 32294**. I don't know if there is a mistake.
-
+**104,802; 198,924; 109,603; 27,678; 35,189**.
 
 ## Question 4. Longest trip for each day
 
@@ -225,8 +206,6 @@ For the passengers picked up in Ocrober 2019 in the zone
 name "East Harlem North" which was the drop off zone that had
 the largest tip?
 
-Note: it's `tip` , not `trip`
-
 We need the name of the zone, not the ID.
 
 - Yorkville West
@@ -280,6 +259,7 @@ Answers:
 - terraform init, terraform apply -auto-aprove, terraform destroy
 - terraform import, terraform apply -y, terraform rm
 
+Answer : **terraform init, terraform apply -auto-aprove, terraform destroy**
 
 ## Submitting the solutions
 
